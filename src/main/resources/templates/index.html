@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-132857976-3"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+	gtag('js', new Date());
+	gtag('config', 'UA-132857976-3');
+</script>
+
+
+<meta charset="utf-8">
+<meta name="keywords" content="alivee, link, shortener">
+<meta name="description" content="Your link is going to be Aliv.ee">
+<meta name="google" content="notranslate" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel=”canonical” href=”http://aliv.ee” />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link rel="icon" type="image/png" th:href="@{/img/icon.png}" />
+<title>aliv.ee</title>
+</head>
+<body>
+	<div class="container">
+		<div class="row m-3">
+			<img th:src="@{/img/logo@3x.png}" class="img-fluid" alt="Alivee Logo" style="max-height: 50px;" />
+		</div>
+
+		<hr class="my-1 mt-3">
+
+		<div class="row mt-3 text-center">
+			<div class="col mx-auto" style="max-width: 500px;">
+				<div class="card">
+					<img class="card-img-top img-fluid" th:src="@{/img/bridge.jpg}" alt="Royalty Free Bridge Image">
+					<div class="card-body">
+						<h5 class="card-title">Your link is going to be Aliv.ee</h5>
+						<p class="card-text">Choose your own short link.</p>
+						<input id="url" type="text" class="form-control input-lg m-1" placeholder="Paste Your URL Here">
+						<div id="urlError" class="alert alert-danger" role="alert" hidden>URL is invalid.</div>
+						<div class="input-group mb-3 input-group-lg m-1">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="shortLinkLabel">aliv.ee/</span>
+							</div>
+							<input id="linkId" type="text" class="form-control" aria-describedby="shortLinkLabel" onkeyup="javascript:doesLinkExist()">
+						</div>
+						<div id="linkIdError" class="alert alert-danger" role="alert" hidden>This link is used.</div>
+						<button id="aliveeButton" type="button" class="btn btn-primary" onclick="javascript:createLink()" disabled>Make Your Link Aliv.ee</button>
+						<hr class="my-1 m-3">
+						<p id="result" class="card-text">Your link will be here.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<hr class="my-1 mt-3">
+
+		<div class="row">
+			<div class="col-md-4 text-center"></div>
+			<div class="col-md-4 text-center"></div>
+			<div class="col-md-4">
+				<table class="table table-sm table-borderless">
+					<thead>
+						<tr>
+							<th colspan="2" scope="col"><a href="https://ionia.ee"><img th:src="@{/img/ionia_logo.png}" class="img-fluid" alt="Btckit Title" style="max-height: 50px;"></a></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><i class="fas fa-home"></i></td>
+							<td><a href="https://ionia.ee">www.ionia.ee</a></td>
+						</tr>
+						<tr>
+							<td><i class="fas fa-envelope"></i></td>
+							<td>mail@ionia.ee</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		function createLink() {
+			$.get("/api/createLink", {
+				linkId : document.getElementById("linkId").value,
+				url : document.getElementById("url").value
+			}, function(data) {
+				document.getElementById("result").innerHTML = 'aliv.ee/'
+						+ data.linkId;
+			});
+		};
+
+		function doesLinkExist() {
+			$.get("/api/doesLinkExist", {
+				linkId : document.getElementById("linkId").value
+			}, function(data) {
+				if (data) {
+					document.getElementById("linkIdError").hidden = false;
+					document.getElementById("aliveeButton").disabled = true;
+				} else {
+					document.getElementById("linkIdError").hidden = true;
+					document.getElementById("aliveeButton").disabled = false;
+				}
+			});
+		};
+	</script>
+</body>
+</html>
