@@ -4,8 +4,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/alivee
-    username: alivee-user
-    password: alivee-password
+    username:
+    password:
   jpa:
     properties:
       javax:
