@@ -1,0 +1,27 @@
+server:
+  port: 80
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/alivee
+    username: alivee-user
+    password: alivee-password
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: never
+  jpa:
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: none #none,create
+              create-target: create.sql
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
