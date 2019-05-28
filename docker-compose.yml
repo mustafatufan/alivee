@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  postgres:
+    hostname: postgres
+    image: postgres:9.5.15-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: alivee-user
+      POSTGRES_PASSWORD: alivee-password
+      POSTGRES_DB: alivee
+    volumes:
+      - ./postgresDbDir:/var/lib/postgresql/data
+      - ./db-init/:/docker-entrypoint-initdb.d
+
+  alivee:
+    image: alivee
+    hostname: alivee
+    restart: always
+    build:
+      context: .
+    depends_on:
+      - postgres
+    ports:
+      - "80:80"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default,docker
